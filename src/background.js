@@ -13,7 +13,8 @@ app.on('ready', async () => {
     // 初始化一个应用
     mainWindow = new BrowserWindow({
         frame: false,
-        resizable: false,
+        // 控制是否允许用户改变窗口
+        // resizable: false, 
         width: 800,
         height: 600,
         icon: iconPath,
@@ -21,9 +22,6 @@ app.on('ready', async () => {
             backgroundThrottling: false,
             nodeIntegration: true,
             contextIsolation: false
-        },
-        webContents: {
-            openDevtools: true
         }
     });
     if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -36,6 +34,7 @@ app.on('ready', async () => {
     }
     mainWindow.removeMenu();
     setTray();
+    // 打开控制台
     mainWindow.webContents.openDevTools();
 });
 
@@ -52,6 +51,9 @@ ipcMain.on('remindWindow:close', () => {
     remindWindow.close();
 });
 
+/**
+ * 创建弹窗，后端激活的弹窗
+ */
 ipcMain.on('setTaskTimer', (event, time, task) => {
     const now = new Date();
     const date = new Date();

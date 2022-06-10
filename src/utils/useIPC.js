@@ -1,3 +1,11 @@
+/*
+ * @Author: qiuwt
+ * @Email: 423822728@qq.com
+ * @Date: 2022-06-10 16:28:44
+ * @Description: 客户端控制
+ * @Route: Route
+ */
+
 import { ref } from 'vue';
 const electron = window.require('electron');
 const { ipcRenderer } = electron;

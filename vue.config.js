@@ -1,6 +1,6 @@
 module.exports = { // 多页面打包
     publicPath: './',
-    // 编译时的eslint提示
+    // 编译时的eslint提示处理
     lintOnSave: process.env.NODE_ENV !== 'production',
     pages: {
         main: {

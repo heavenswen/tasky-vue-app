@@ -1,5 +1,11 @@
+/*
+ * @Author: qiuwt
+ * @Email: 423822728@qq.com
+ * @Date: 2022-06-10 16:28:09
+ * @Description: 数据处理
+ * @Route: Route
+ */
 import { computed } from 'vue';
-
 export function useTodo (proxy) {
     const todoArray = computed(() => proxy.$store.state.todoArray);
     const updateTodo = payload => {

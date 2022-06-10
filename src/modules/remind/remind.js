@@ -1,4 +1,7 @@
 import { createApp } from 'vue';
 import App from './Remind.vue';
+import UiInit from '@/componets/'
 
-createApp(App).mount('#app');
+const app = createApp(App)
+app.mount('#app');
+UiInit(app)
