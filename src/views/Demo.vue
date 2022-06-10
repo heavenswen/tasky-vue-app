@@ -20,7 +20,6 @@ import { reactive, getCurrentInstance } from 'vue';
 export default {
     setup () {
         const { proxy } = getCurrentInstance();
-              
         const page = reactive({
             loading: false,
             data: []
