@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "npm run electron:serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
@@ -13,6 +14,9 @@
   },
   "main": "background.js",
   "dependencies": {
+    "ant-design-vue": "^3.2.6",
+    "axios": "^0.27.2",
+    "babel-plugin-import": "^1.13.5",
     "core-js": "^3.6.5",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
@@ -52,7 +56,9 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "indent": ["error", 2]
+    }
   },
   "browserslist": [
     "> 1%",

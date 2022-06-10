@@ -1,15 +1,23 @@
 <template>
-  <h2>新建任务</h2>
+  <h2>新建任务 test 测试更新</h2>
   <div class="form-item">
     <label for="taskName">设置任务</label>
-    <input type="text" id="taskName" class="enable-click" v-model="task.name"/>
+    <input type="text"
+           id="taskName"
+           class="enable-click"
+           v-model="task.name" />
   </div>
   <div class="form-item">
     <label for="taskTime">设置时间</label>
-    <input type="time" id="taskTime" class="enable-click" v-model="task.time">
+    <input type="time"
+           id="taskTime"
+           class="enable-click"
+           v-model="task.time">
   </div>
+  {{ task.list }}
   <div class="form-item">
-    <span class="submit-task enable-click" @click="addFunc">确定</span>
+    <span class="submit-task enable-click"
+          @click="addFunc">确定</span>
   </div>
 </template>
 <script>
@@ -37,6 +45,7 @@ export default {
         path: '/'
       })
     }
+
     return {
       task,
       addFunc
@@ -45,13 +54,13 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.form-item{
+.form-item {
   margin-top: 40px;
 }
-.form-item input{
+.form-item input {
   margin-left: 20px;
 }
-.submit-task{
+.submit-task {
   background-color: #31c27c;
   color: #fff;
   padding: 6px 15px;

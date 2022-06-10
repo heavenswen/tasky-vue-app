@@ -1,4 +1,4 @@
-module.exports = { //多页面打包
+module.exports = { // 多页面打包
   publicPath: './',
   pages: {
     main: {
@@ -17,6 +17,17 @@ module.exports = { //多页面打包
       template: 'public/remind.html',
       filename: 'remind.html',
       title: 'Remind Page'
+    }
+  },
+  devServer: {
+    // 代理配置
+    proxy: {
+      '/api': {
+        // 的请求会将请求代理到
+        target: 'http://yapi.heisea.cn/mock/159'
+        // 如果不希望传递/api，则需要重写路径
+        // pathRewrite: { '^/api': '' },
+      }
     }
   }
 }
