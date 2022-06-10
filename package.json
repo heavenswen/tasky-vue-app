@@ -7,16 +7,20 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "lint-es": "eslint --fix --ext .vue,.js src",
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "precommit": "lint-staged"
+    "lint-staged": "lint-staged"
   },
+  "pre-commit": [
+    "lint-staged"
+  ],
   "lint-staged": {
     "src/**/*.{js,json,css,vue}": [
-     "npm run lint",
-     "git add"
+      "eslint --fix",
+      "git add"
     ]
   },
   "main": "background.js",
