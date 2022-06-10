@@ -1,33 +1,33 @@
 <template>
-  <span class="close enable-click" @click="closeRemind">知道了</span>
-  <div class="reminder">
-    <span>{{remindMsg}}</span>的时间到啦！
-  </div>
-  <div class="background"
-      :style="{
-        backgroundImage: 'url(./img/' + imgs[bgIndex] + ')',
-        backgroundSize:'contain'}">
-  </div>
+    <span class="close enable-click" @click="closeRemind">知道了</span>
+    <div class="reminder">
+        <span>{{remindMsg}}</span>的时间到啦！
+    </div>
+    <div class="background"
+         :style="{
+             backgroundImage: 'url(./img/' + imgs[bgIndex] + ')',
+             backgroundSize:'contain'}">
+    </div>
 </template>
 <script>
-import { closeRemind, setRemindMsg } from '../../utils/useIPC.js'
+import { closeRemind, setRemindMsg } from '../../utils/useIPC.js';
 export default {
-  setup () {
-    const remindMsg = setRemindMsg()
-    return {
-      closeRemind,
-      remindMsg,
-      bgIndex: parseInt(Math.random() * 5),
-      imgs: [
-        'background_1.jfif',
-        'background_2.png',
-        'background_3.jpg',
-        'background_4.jfif',
-        'background_5.jfif'
-      ]
+    setup () {
+        const remindMsg = setRemindMsg();
+        return {
+            closeRemind,
+            remindMsg,
+            bgIndex: parseInt(Math.random() * 5),
+            imgs: [
+                'background_1.jfif',
+                'background_2.png',
+                'background_3.jpg',
+                'background_4.jfif',
+                'background_5.jfif'
+            ]
+        };
     }
-  }
-}
+};
 </script>
 <style lang="scss">
 *{

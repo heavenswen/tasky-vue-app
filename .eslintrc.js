@@ -11,33 +11,32 @@ module.exports = {
         ecmaVersion: 2020
     },
     env: {
-        browser: true
-     
+        browser: true,
+        "node": true
+
     },
-    extends: ['airbnb-base', 'plugin:vue/recommended'],
+    "extends": [
+        "plugin:vue/vue3-essential",
+        "@vue/standard"
+    ],
     // required to lint *.vue files
     plugins: ['vue'],
     settings: {
-        // 解析import的资源路径，比如alias
-        'import/resolver': {
-            webpack: {
-                config: './build/webpack.base.js'
-            }
-        }
     },
     // 自定义校验规则
     rules: {
         // eslint-plugin-import插件提供的能力
-        'import/extensions': [
-            'error',
-            'always',
-            {
-                js: 'never',
-                vue: 'never',
-                css: 'never',
-                less: 'never'
-            }
-        ],
+        // 'import/extensions': [
+        //     'error',
+        //     'always',
+        //     // 是否取消后缀
+        //     // {
+        //     //     js: 'never',
+        //     //     vue: 'never',
+        //     //     css: 'never',
+        //     //     less: 'never'
+        //     // }
+        // ],
         'no-param-reassign': 'off',
         // 允许在开发环境添加debugger
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
@@ -46,7 +45,9 @@ module.exports = {
         indent: ['error', 4],
         'linebreak-style': ['error', 'unix'],
         quotes: ['error', 'single'],
-        semi: ['error', 'always'],
+        // 末尾分号
+        semi: 'off',
+        // 逗号
         'comma-dangle': ['error', 'never'],
         'global-require': 'off',
         'no-trailing-spaces': 'off',
@@ -65,16 +66,6 @@ module.exports = {
                 multiline: 'never'
             }
         ],
-        'vue/max-attributes-per-line': [
-            'error',
-            {
-                singleline: 1,
-                multiline: {
-                    max: 1,
-                    allowFirstLine: true
-                }
-            }
-        ]
         // 'linebreak-style': [0, 'error', 'windows']
     }
 };
