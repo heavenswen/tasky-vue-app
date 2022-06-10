@@ -11,8 +11,6 @@
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "lint-staged": "lint-staged",
-    "precommit": "lint-staged"
   },
   "pre-commit": [
     "lint-staged"
