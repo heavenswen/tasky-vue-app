@@ -18,27 +18,27 @@
 <script>
 import { reactive, getCurrentInstance } from 'vue';
 export default {
-    setup() {
-                const { proxy } = getCurrentInstance();
+    setup () {
+            const { proxy } = getCurrentInstance();
         const page = reactive({
             loading: false,
-            data: [],
+            data: []
         });
-        function fetchPage() {
+        function fetchPage () {
             page.loading = true;
             proxy
                 .$fetch({
-                    url: '/api/list',
+                    url: '/api/list'
                 })
-                .then((res) => {
+                .then(res => {
                     page.loading = false;
                     page.data = res.data.records;
                 });
         }
         return {
             page,
-            fetchPage,
+            fetchPage
         };
-    },
+    }
 };
 </script>
