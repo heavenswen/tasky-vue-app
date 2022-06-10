@@ -14,9 +14,11 @@
     "postuninstall": "electron-builder install-app-deps",
     "lint-staged": "lint-staged"
   },
-  "pre-commit": [
-    "lint-staged"
-  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
     "src/**/*.{js,json,css,vue}": [
       "eslint --fix",
