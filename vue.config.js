@@ -1,5 +1,7 @@
 module.exports = { // 多页面打包
     publicPath: './',
+    // 编译时的eslint提示
+    lintOnSave: process.env.NODE_ENV !== 'production',
     pages: {
         main: {
             // page 的入口
@@ -20,7 +22,7 @@ module.exports = { // 多页面打包
         }
     },
     devServer: {
-    // 代理配置
+        // 代理配置
         proxy: {
             '/api': {
                 // 的请求会将请求代理到

@@ -10,7 +10,14 @@
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
+    "postuninstall": "electron-builder install-app-deps",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "src/**/*.{js,json,css,vue}": [
+     "eslint --fix",
+     "git add"
+    ]
   },
   "main": "background.js",
   "dependencies": {
@@ -39,6 +46,8 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^7.0.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.1",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "vue-cli-plugin-electron-builder": "~2.1.1",
@@ -57,7 +66,10 @@
       "parser": "babel-eslint"
     },
     "rules": {
-      "indent": ["error", 2]
+      "indent": [
+        "error",
+        4
+      ]
     }
   },
   "browserslist": [
