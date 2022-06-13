@@ -12,15 +12,15 @@ let remindWindow;
 app.on('ready', async () => {
     // 初始化一个应用
     mainWindow = new BrowserWindow({
-        frame: false,
+        // frame: false, // 创建无边框窗口,将看不到默认窗口按钮
         // 控制是否允许用户改变窗口
         // resizable: false, 
         width: 800,
         height: 600,
-        icon: iconPath,
+        icon: iconPath, // 应用运行时的标题栏图标
         webPreferences: {
-            backgroundThrottling: false,
-            nodeIntegration: true,
+            backgroundThrottling: false, // 设置应用在后台正常运行
+            nodeIntegration: true, // 设置能在页面使用nodejs的API
             contextIsolation: false
         }
     });
@@ -32,7 +32,10 @@ app.on('ready', async () => {
         // Load the index.html when not in development
         mainWindow.loadURL(`file://${__dirname}/main.html`);
     }
-    mainWindow.removeMenu();
+    /**
+     * 删除默认的菜单
+     */
+    // mainWindow.removeMenu();
     setTray();
     // 打开控制台
     mainWindow.webContents.openDevTools();
@@ -46,12 +49,16 @@ app.on('activate', () => {
 ipcMain.on('mainWindow:close', () => {
     mainWindow.hide();
 });
-
+/**
+ * 监听渲染进程
+ * 关闭渲染窗口
+ */
 ipcMain.on('remindWindow:close', () => {
     remindWindow.close();
 });
 
 /**
+ * 监听渲染进程
  * 创建弹窗，后端激活的弹窗
  */
 ipcMain.on('setTaskTimer', (event, time, task) => {
@@ -64,9 +71,13 @@ ipcMain.on('setTaskTimer', (event, time, task) => {
     }, timeout);
 });
 
+/**
+ * 实现点击图标的显示隐藏切换
+ */
 function setTray () {
     tray = new Tray(iconPath);
-    tray.setToolTip('Tasky');
+    // 设置此托盘图标的悬停文本
+    tray.setToolTip('Tasky ！！');
     tray.on('click', () => {
         if (mainWindow.isVisible()) {
             mainWindow.hide();
@@ -75,16 +86,24 @@ function setTray () {
         }
     });
     tray.on('right-click', () => {
+        // 定制自定义菜单
         const menuConfig = Menu.buildFromTemplate([
             {
                 label: 'Quit',
-                click: () => app.quit()
+                submenu: [{
+                    label: 'quit',
+                    accelerator: 'CmdOrCtrl+Q', // 快捷键
+                    click: () => app.quit()
+                }]
             }
         ]);
         tray.popUpContextMenu(menuConfig);
     });
 }
-
+/**
+ * 创建一个提醒窗口
+ * @param {*} task 
+ */
 function createRemindWindow (task) {
     if (remindWindow) remindWindow.close();
     remindWindow = new BrowserWindow({
@@ -97,6 +116,7 @@ function createRemindWindow (task) {
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
+            // webSecurity:false // 同源策略
         },
         webContents: {
             openDevtools: true
@@ -121,6 +141,9 @@ function createRemindWindow (task) {
         remindWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL + '/remind.html');
     } else {
         createProtocol('app');
+        /**
+         * 加载本地
+         */
         remindWindow.loadURL(`file://${__dirname}/remind.html`);
     }
 

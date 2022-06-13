@@ -2,7 +2,7 @@
  * @Author: qiuwt
  * @Email: 423822728@qq.com
  * @Date: 2022-06-10 16:28:44
- * @Description: 客户端控制
+ * @Description: 客户端控制，打通渲染程序和主程序
  * @Route: Route
  */
 
