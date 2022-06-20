@@ -5,6 +5,7 @@
             <router-link to="/">待办事项</router-link>
             <router-link to="/finished">已完成</router-link>
             <router-link to="/demo">请求</router-link>
+            <router-link to="/book">阅读器</router-link>
         </div>
         <router-link to="/add"><span>新建</span></router-link>
     </div>
