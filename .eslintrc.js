@@ -1,6 +1,7 @@
 // https://eslint.org/docs/user-guide/configuring
 
 module.exports = {
+    // 为true根配置文件，否则会按照目录树向上搜索
     root: true,
     // 采用vue提供的解析器
     parser: 'vue-eslint-parser',

@@ -21,7 +21,9 @@ app.on('ready', async () => {
         webPreferences: {
             backgroundThrottling: false, // 设置应用在后台正常运行
             nodeIntegration: true, // 设置能在页面使用nodejs的API
-            contextIsolation: false
+            contextIsolation: false,
+            // 设置安全参数
+            webSecurity: false // false 之后就可以访问 本地资源文件了 src="D:/xxxx/xxx.png"
         }
     });
     if (process.env.WEBPACK_DEV_SERVER_URL) {
