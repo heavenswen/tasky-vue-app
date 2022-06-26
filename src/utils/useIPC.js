@@ -29,3 +29,10 @@ export function setRemindMsg () {
     });
     return remindMsg;
 }
+
+export function watchLog (cb) {
+    ipcRenderer.on('log', (e, task) => {
+        console.log('log:', decodeURIComponent(task))
+        if (cb) cb(e, task)
+    });
+}

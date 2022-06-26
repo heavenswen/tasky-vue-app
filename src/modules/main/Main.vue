@@ -1,6 +1,6 @@
 <template>
     <div id="nav">
-        <div class="date">{{dateStr}}</div>
+        <div class="date"> {{dateStr}}</div>
         <div class="nav-text">
             <router-link to="/">待办事项</router-link>
             <router-link to="/finished">已完成</router-link>
@@ -17,11 +17,12 @@
     </div>
 </template>
 <script>
-import { closeMain } from '../../utils/useIPC.js';
+import { closeMain, watchLog } from '../../utils/useIPC.js';
 export default {
     setup () {
         const date = new Date();
         const dateStr = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+        watchLog();
         return {
             closeMain,
             dateStr

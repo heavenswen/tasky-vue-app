@@ -44,21 +44,22 @@ module.exports = { // 多页面打包
                     "output": "dist",  //打包生成的目录，默认是dist
                 },
                 // 更新模块
-                // "publish": [
-                //     {
-                //        "provider": "generic",
-                //        "url": "http://127.0.0.1:9005/" 
-                //     }
-                //   ],
+                "publish": [
+                    {
+                       "provider": "generic",
+                       "url": "http://127.0.0.1:9005/" 
+                    }
+                  ],
                 // "publish": ['github'],
                 // mac
                 "mac": {
                     // //应用程序安装到哪个分类下，具体有哪些分类可以在苹果官网上找
                     // "category": "public.app-category.utilities"
+                    "icon": "public/icon/icon.icns" //安装时图标
                 },
                 "dmg": {
                     "background": "./public/img/background_1.jfif",
-                    "icon": "./public/icon/icon.icns",
+                    "icon": "public/icon/icon.icns", // 在桌面的图标
                     "iconSize": 100,
                     "contents": [
                         {

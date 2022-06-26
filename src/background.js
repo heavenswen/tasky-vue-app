@@ -1,9 +1,15 @@
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
-import { app, BrowserWindow, ipcMain, Tray, Menu, screen } from 'electron';
+import { autoUpdater } from 'electron-updater'
+
+/**
+ * ipcMain 它控制着由渲染进程(web page)发送过来的异步或同步消息.从渲染进程发送过来的消息将触发事件.
+ * 
+ */
+import { app, BrowserWindow, ipcMain, Tray, Menu, screen, dialog } from 'electron';
 
 const path = require('path');
 // eslint-disable-next-line
- const iconPath = path.join(__static, 'icon.png');
+const iconPath = path.join(__static, 'icon.png');
 
 let mainWindow;
 let tray;
@@ -15,19 +21,20 @@ app.on('ready', async () => {
         // frame: false, // 创建无边框窗口,将看不到默认窗口按钮
         // 控制是否允许用户改变窗口
         // resizable: false, 
+        skipTaskbar: true, // 托盘运行
         width: 800,
         height: 600,
         icon: iconPath, // 应用运行时的标题栏图标
         webPreferences: {
-            backgroundThrottling: false, // 设置应用在后台正常运行
+            backgroundThrottling: process.env.NODE_ENV === 'production', // 设置应用在后台正常运行
             nodeIntegration: true, // 设置能在页面使用nodejs的API
-            contextIsolation: false,
+            contextIsolation: false, // 上下文隔离 如window不通用
             // 设置安全参数
             webSecurity: false // false 之后就可以访问 本地资源文件了 src="D:/xxxx/xxx.png"
         }
     });
     if (process.env.WEBPACK_DEV_SERVER_URL) {
-    // Load the url of the dev server if in development mode
+        // Load the url of the dev server if in development mode
         await mainWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL + '/main.html');
     } else {
         createProtocol('app');
@@ -42,14 +49,26 @@ app.on('ready', async () => {
     // 打开控制台
     if (process.env.NODE_ENV !== 'production') mainWindow.webContents.openDevTools();
     // 
+    // mainWindow.on("close",(e)=>{
+    //     // 阻止事件
+    //     e.preventDefault();
+    //     mainWindow.hide(); // 不关闭应用
+    // })
+    // 每次启动程序，就检查更新
+    checkUpdate()
 });
 
 app.on('activate', () => {
     // eslint-disable-next-line
-  if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
 
-ipcMain.on('mainWindow:close', () => {
+function sendWinLog (obj) {
+    // 主动发送给渲染进程
+    mainWindow.webContents.send('log', obj);
+}
+
+ipcMain.on('mainWindow:close', e => {
     mainWindow.hide();
 });
 /**
@@ -160,51 +179,60 @@ function createRemindWindow (task) {
         remindWindow && remindWindow.close();
     }, 50 * 1000);
 }
+/**
+ * 更新模块
+ */
+function checkUpdate () {
+    if (process.platform === 'darwin') {
+        // 我们使用koa-static将静态目录设置成了static文件夹，
+        // 所以访问http://127.0.0.1:9005/darwin，就相当于访问了static/darwin文件夹，win32同理
+        autoUpdater.setFeedURL('http://127.0.0.1:9005/darwin') // 设置要检测更新的路径
+    } else {
+        autoUpdater.setFeedURL('http://127.0.0.1:9005/win32')
+    }
 
-// const { autoUpdater } = require('electron-updater')
-// function checkUpdate(){
-//   if(process.platform == 'darwin'){  
-  
-//     //我们使用koa-static将静态目录设置成了static文件夹，
-//     //所以访问http://127.0.0.1:9005/darwin，就相当于访问了static/darwin文件夹，win32同理
-//     autoUpdater.setFeedURL('http://127.0.0.1:9005/darwin')  //设置要检测更新的路径
-    
-//   }else{
-//     autoUpdater.setFeedURL('http://127.0.0.1:9005/win32')
-//   }
-  
-//   //检测更新
-//   autoUpdater.checkForUpdates()
-  
-//   //监听'error'事件
-//   autoUpdater.on('error', (err) => {
-//     console.log(err)
-//   })
-  
-//   //监听'update-available'事件，发现有新版本时触发
-//   autoUpdater.on('update-available', () => {
-//     console.log('found new version')
-//   })
-  
-//   //默认会自动下载新版本，如果不想自动下载，设置autoUpdater.autoDownload = false
-  
-//   //监听'update-downloaded'事件，新版本下载完成时触发
-//   autoUpdater.on('update-downloaded', () => {
-//     dialog.showMessageBox({
-//       type: 'info',
-//       title: '应用更新',
-//       message: '发现新版本，是否更新？',
-//       buttons: ['是', '否']
-//     }).then((buttonIndex) => {
-//       if(buttonIndex.response == 0) {  //选择是，则退出程序，安装新版本
-//         autoUpdater.quitAndInstall() 
-//         app.quit()
-//       }
-//     })
-//   })
-// }
+    // 检测更新
+    autoUpdater.checkForUpdates()
 
-// app.on('ready', () => {
-//   //每次启动程序，就检查更新
-//   checkUpdate()
-// }
+    // 监听'error'事件
+    autoUpdater.on('error', err => {
+        console.log(err)
+    })
+
+    // 监听'update-available'事件，发现有新版本时触发
+    autoUpdater.on('update-available', () => {
+        console.log('found new version')
+    })
+
+    // 默认会自动下载新版本，如果不想自动下载，设置autoUpdater.autoDownload = false
+    // autoUpdater.downloadUpdate().then(() => {
+    //     // 退出并安装
+    //     autoUpdater.quitAndInstall()
+    // }).catch(e => {
+    //     dialog.showMessageBox({
+    //         title: e,
+    //     })
+    //     // do 
+    // })
+    // 进度条
+    // autoUpdater.on('download-progress', (progress) => {
+    //   });
+    // 监听'update-downloaded'事件，新版本下载完成时触发
+    autoUpdater.on('update-downloaded', () => {
+        dialog.showMessageBox({
+            type: 'info',
+            title: '应用更新',
+            message: '发现新版本，是否更新？',
+            buttons: ['是', '否']
+        }).then(buttonIndex => {
+            if (buttonIndex.response === 0) { // 选择是，则退出程序，安装新版本
+                // 手动触发下载安装包
+                autoUpdater.quitAndInstall()
+            }
+        })
+    })
+    // 当前版本为最新版本
+    autoUpdater.on('update-not-available', function (info) {
+        sendWinLog(info)
+    });
+}
